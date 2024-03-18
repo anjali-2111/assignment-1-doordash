@@ -7,33 +7,35 @@ s3_client = boto3.client('s3')
 sns_client = boto3.client('sns')
 
 def lambda_handler(event, context):
-    # print(event)
+    print(event)
     # Extracting S3 bucket and key from the event
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
+    # print("Bucket_name : ",bucket)
+    # print("Key : ",key)
     
-    # Read JSON file into pandas DataFrame
+    #  Read JSON file into pandas DataFrame
     obj = s3_client.get_object(Bucket=bucket, Key=key)
     df = pd.read_json(obj['Body'])
+    # print(df)
     
-    # Filter records where status is "delivered"
+    #  Filter records where status is "delivered"
     filtered_df = df[df['status'] == 'delivered']
     
     # Convert filtered DataFrame to JSON string
     filtered_json = filtered_df.to_json(orient='records')
     
     # Write filtered DataFrame to new JSON file in S3
-    target_bucket = 'doordash-target-zn'
+    target_bucket = 'doordash-target-zn1'
     target_key = key.split('/')[-1].split('.')[0] + '_filtered.json'
     s3_client.put_object(Bucket=target_bucket, Key=target_key, Body=filtered_json)
     
     # Publish success message to SNS topic
-    sns_topic_arn = 'arn:aws:sns:us-east-1:123456789012:doordash-topic'
+    sns_topic_arn = 'arn:aws:sns:us-east-1:516969323873:doordash-sns'
     sns_client.publish(TopicArn=sns_topic_arn, Message='Successfully processed file {}'.format(key))
     
     return {
         'statusCode': 200,
         'body': json.dumps('File processed successfully!')
     }
-
 

@@ -10,6 +10,7 @@ phases:
     commands:
       - echo "Zipping deployment package..."
       - cd lib
+      - export PATH="C:\Program Files\7-Zip:$PATH"
       - 7z a -tzip -mx9 ../deployment_package.zip .
       - cd ..
       - 7z u deployment_package.zip lambda_function.py

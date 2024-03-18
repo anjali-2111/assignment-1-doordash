@@ -16,7 +16,6 @@
 #       - cd ..
 #       - 7z u deployment_package.zip lambda_function.py
 #       - zip -g deployment_package.zip lambda_function.py
-
 version: 0.2
 
 phases:

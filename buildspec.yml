@@ -1,20 +1,27 @@
+# version: 0.2
+# phases:
+#   # install:
+#     # runtime-versions:
+#     #   python: 3.11
+#     # commands:
+#     #   - echo "Installing dependencies..."
+#     #   - pip install -r requirements.txt -t lib
+  # build:
+#     commands:
+#       - echo "Zipping deployment package..."
+#       - cd lib
+#       - export PATH="C:\Program Files\7-Zip:$PATH"
+#       - 7z a -tzip -mx9 ../deployment_package.zip .
+#       - zip -r9 ../deployment_package.zip .
+#       - cd ..
+#       - 7z u deployment_package.zip lambda_function.py
+#       - zip -g deployment_package.zip lambda_function.py
+
 version: 0.2
+
 phases:
-  install:
-    runtime-versions:
-      python: 3.11
-    commands:
-      - echo "Installing dependencies..."
-      - pip install -r requirements.txt -t lib
   build:
     commands:
-      - echo "Zipping deployment package..."
-      - cd lib
-      # - export PATH="C:\Program Files\7-Zip:$PATH"
-      # - 7z a -tzip -mx9 ../deployment_package.zip .
-      - zip -r9 ../deployment_package.zip .
-      - cd ..
-      # - 7z u deployment_package.zip lambda_function.py
       - zip -g deployment_package.zip lambda_function.py
   post_build:
     commands:
